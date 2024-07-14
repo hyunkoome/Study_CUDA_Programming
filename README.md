@@ -41,6 +41,10 @@ PATH=/usr/local/bin:$PATH:$HOME/bin
 source ~./bashrc
 ```
 
+Easy way to compile
+```shell
+nvcc -o hello_cuda hello_cuda.cu -DCMAKE_CUDA_ARCHITECTURES='89'
+```
 
 
 

@@ -1,5 +1,10 @@
-//
 // Created by hyunkoo on 24. 7. 14.
+//nvcc -o hello_parallel hello_parallel.cu -DCMAKE_CUDA_ARCHITECTURES='89'
+
+// CLion
+// Compiler options: -DCMAKE_CUDA_ARCHITECTURES='89'
+// Additional options -> Compiler path: /usr/local/cuda-12.1/bin/nvcc
+
 #include <stdio.h>
 
 // cuda

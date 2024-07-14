@@ -1,3 +1,9 @@
+//nvcc -o hello_cuda hello_cuda.cu -DCMAKE_CUDA_ARCHITECTURES='89'
+
+// CLion
+// Compiler options: -DCMAKE_CUDA_ARCHITECTURES='89'
+// Additional options -> Compiler path: /usr/local/cuda-12.1/bin/nvcc
+
 //#include <iostream>
 #include <stdio.h>
 
