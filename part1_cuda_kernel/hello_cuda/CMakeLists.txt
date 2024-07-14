@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.27)
 project(hello_cuda CUDA)
 
+#set(DTCNN_CUDA_ARCHITECTURES 89)
+#if(NOT DEFINED ${CMAKE_CUDA_ARCHITECTURES})
+#    set(CMAKE_CUDA_ARCHITECTURES 89)
+#endif()
+
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
 endif ()

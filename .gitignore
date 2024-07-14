@@ -4,9 +4,22 @@
 *.ptx
 *.cubin
 *.fatbin
-*.idea/*
+.idea
 .vscode/*
 *.o
 *.ptx
-release/
+release
+Makefile
 *.so.*
+CMakeFiles
+cmake_install.cmake
+CMakeCache.txt
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
