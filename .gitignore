@@ -6,3 +6,6 @@
 *.fatbin
 *.idea/*
 .vscode/*
+*.o
+*.ptx
+release/
