@@ -3,7 +3,7 @@
 ### Must prepare as follows:
 - Nvidia GPU
 - OS: Ubuntu 20.04 (for me), Windows 10 over., Mac
-- Install CUDA (for me, v12.1), download [CUDA Samples](https://github.com/NVIDIA/cuda-samples)
+- Install CUDA (for me, v12.1)
 - Pure python Env (Not conda Env)
   - If you want to set python3 for main python module, please set.
 ```shell
@@ -39,6 +39,18 @@ vi ~./bashrc
 PATH=/usr/local/bin:$PATH:$HOME/bin
 ```shell
 source ~./bashrc
+```
+**Download [CUDA Samples](https://github.com/NVIDIA/cuda-samples) (for me, v12.1)**
+```shell
+wget https://github.com/NVIDIA/cuda-samples/archive/refs/tags/v12.1.tar.gz
+tar -zxvf v12.1.tar.gz
+```
+
+```shell
+wget https://github.com/NVIDIA/cuda-samples/archive/refs/tags/v12.1.zip
+unzip v12.1.zip
+make
+sudo make install
 ```
 
 ### CUDA for Ubuntu
@@ -81,6 +93,10 @@ nvcc -o hello_cuda hello_cuda.cu -DCMAKE_CUDA_ARCHITECTURES='89'
 - here: -O2 (오투) : build release mode
 ```shell
 nvcc --gpu-architecture=compute_89 --gpu-code=sm_89,compute_89 -O2 -o hello_linux hello_linux.cu
+```
+- add architecture
+```shell
+/usr/local/cuda/bin/nvcc -ccbin g++ -I../../../Common  -m64 --std=c++14 --threads 1 -gencode arch=compute_89,code=sm_89 -o segmentationTree.o -c segmentationTree.cu
 ```
 
 **build**
