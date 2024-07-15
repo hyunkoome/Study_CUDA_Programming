@@ -14,6 +14,8 @@ Makefile
 CMakeFiles
 cmake_install.cmake
 CMakeCache.txt
+cmake-build-debug
+build
 # Default ignored files
 /shelf/
 /workspace.xml
