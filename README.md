@@ -134,6 +134,17 @@ make
   - recursion 재귀 호출 X
     - 새로운 버전에서는 가능하지만, 사용하지 마세요!
   - dynamic polymorphism 다중 상속 X
+- 커널 kernel function
+  - loof body를 따로 때냈을때, 이 함수를 .., 즉, loof 의 body 부분만 함수로 구현한 것
+- CUDA 에러 처리
+  - CUDA 시스템은 내부적으로 error flag 를 하나 갖고 있음: 한개 에러만 저장 
+  - cudaError_t cudaGetLastError(void)
+    - 에러를 갖고 오면, Error flag를 리셋, 다음 에러를 또 받을수 있도록 준비
+    - 내가 에러 처리를 직접 할께, 즉, 에러처리라고 함은, 에러 print 하고, Error flag를 리셋    
+  - cudaError_t cudaPeekAtLastError(void)
+    - 에러를 갖고 와도, Error flag를 리셋 X
+    - 따라서, 같은 에러를 한번 체크만 하고, 실제 처리는 누군가 딴 애가 해야될 때는 이 함수를 사용
+    - 스스로 에러 처리는 못함
   
 
 
