@@ -108,5 +108,32 @@ cmake ..
 make
 ```
 
+**CUDA programming model**
+- use PREFIX for each function
+  - `__host__`
+    - can be called by CPU (default, can be omitted)
+    - cpu (host) 에서 사용, 생략 가능
+    - CPU 가 처리
+  - `__device__`
+    - called from other GPU functions, cannot be called by the CPU
+    - GPU에서 사용, cpu에서 사용 X
+    - CUDA 가 처리
+  - `__global__`
+    - launched by CPU, cannot be called from GPU, must return void
+    - GPU에서 사용은 가능하지만, 대신, 실행을 launch 하는 것, 즉, 실행하도록 call 해주는 것은 CPU가 하는 함수가 됨
+    - CUDA 가 처리
+    - kernal fuction 이라고 부름, cuda 에서 젤 많이 사용함
+      - cpu 가 cuda 에 이제 니가 일하라고 지시할때(host->device) call 하는 함수가 global 함수 임
+  - `__host__` and `__device__` qualifiers can be combined
+    - 경우에 따라서, 나중에 복잡한 프로그램을 짜다보면, 하나의 function 을 cpu도 사용하고, cuda도 사용해야 할때,
+    - `__host__` `__device__` 둘다 붙이면, 컴파일러가 두번(cpu, cuda) 컴파일 함.
+- C/C++ 언어와의 차이 
+  - CUDA: GPU 메모리만 접근 가능
+    - 새로운 버전에서는 가능하지만, 사용하지 마세요!
+  - static 변수 X
+  - recursion 재귀 호출 X
+    - 새로운 버전에서는 가능하지만, 사용하지 마세요!
+  - dynamic polymorphism 다중 상속 X
+  
 
 
