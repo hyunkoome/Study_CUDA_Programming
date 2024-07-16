@@ -73,20 +73,66 @@ make
   - dynamic polymorphism 다중 상속 X
 - 커널 kernel function
   - loof body를 따로 때냈을때, 이 함수를 .., 즉, loof 의 body 부분만 함수로 구현한 것
+
+**CUDA와 에러**
+
 - CUDA 에러 처리
-  - CUDA 시스템은 내부적으로 error flag 를 하나 갖고 있음: 한개 에러만 저장 
-  - cudaError_t: CUDA 에러에 대한 데이터 타입  
-  - cudaError_t cudaGetLastError(void)
+  - CUDA 시스템은 내부적으로 error flag 를 하나 갖고 있음: 한개 에러만 저장
+
+
+- 에러 관련 함수들
+  - `cudaGetLastError`: cudaError_t cudaGetLastError(void)
     - 에러를 갖고 오면, Error flag를 리셋, 다음 에러를 또 받을수 있도록 준비
     - 내가 에러 처리를 직접 할께, 즉, 에러처리라고 함은, 에러 print 하고, Error flag를 리셋    
-  - cudaError_t cudaPeekAtLastError(void)
+  - `cudaPeekAtLastError`: cudaError_t cudaPeekAtLastError(void)
     - 에러를 갖고 와도, Error flag를 리셋 X
     - 따라서, 같은 에러를 한번 체크만 하고, 실제 처리는 누군가 딴 애가 해야될 때는 이 함수를 사용
-    - 스스로 에러 처리는 못함
-  - 에러 관련 함수들
-    - cudaGetErrorName, cudaGetErrorString
-    - cudaGetLastError, cudaPeekAtLastError
-    - CUDA error check macros
+    - 스스로 에러 처리는 못함 
+  - `cudaGetErrorName`: const char* cudaGetErrorName( cudaError_t err );
+    - 에러 코드를 err 로 넣어주면, 에러코드에 대응하는 에러를 문자열로 반환
+    - 잘못된 에러 코드를 넣어주면, NULL (nullptr)를 반환함
+  - `cudaGetErrorString`: const char* cudaGetErrorString( cudaError_t err );
+    - 에러 코드를 err 로 넣어주면, 에러가 발생한 이유 즉, 에러에 대한 설명(explanation)을 문자열로 반환
+    - 잘못된 에러 코드를 넣어주면, NULL (nullptr)를 반환함
+  - CUDA error check macros
+  - CUDA error 처리는 CPU thread 기준임
+    - 단, 같은 CPU (host) thread 내에서의 에러
+
+
+- cudaError_t: CUDA 에러에 대한 데이터 타입
+  - typedef enum cudaError cudaError_t
+  - possible values:
+    - cudaSuccess: 성공한 경우
+    - cudaError실해한이유
+    - cudaErrorMissingConfiguration 
+    - cudaErrorMemoryAllocation: MemoryAllocation 실패, 메모리가 없다던지, 메모리를 다 써버렸다던지, 이럴때   
+    - cudaErrorInitializationError 
+    - cudaErrorLaunchFailure: CUDA 커널 함수 Launch했다가 실패했다. 
+    - cudaErrorLaunchTimeout 
+    - cudaErrorLaunchOutOfResources 
+    - cudaErrorInvalidDeviceFunction 
+    - cudaErrorInvalidConfiguration
+    - cudaErrorInvalidDevice 
+    - cudaErrorInvalidValue 
+    - cudaErrorInvalidPitchValue 
+    - cudaErrorInvalidSymbol 
+    - cudaErrorUnmapBufferObjectFailed 
+    - cudaErrorInvalidHostPointer 
+    - cudaErrorInvalidDevicePointer 
+    - cudaErrorInvalidTexture 
+    - cudaErrorInvalidTextureBinding 
+    - cudaErrorInvalidChannelDescriptor 
+    - cudaErrorInvalidMemcpyDirection 
+    - cudaErrorInvalidFilterSetting 
+    - cudaErrorInvalidNormSetting 
+    - cudaErrorUnknown: 무슨 이유를 알수 없는 에러가 발생했다!! 
+    - cudaErrorNotYetImplemented 
+    - cudaErrorInvalidResourceHandle 
+    - cudaErrorInsufficientDriver 
+    - cudaErrorSetOnActiveProcess 
+    - cudaErrorStartupFailure 
+    - cudaErrorApiFailureBase
+    - ...
   
 
 

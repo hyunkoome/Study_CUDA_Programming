@@ -253,6 +253,8 @@ void print3D( const char* name, float* ptr, int dimz, int dimy, int dimx ) {
 }
 
 // CUDA error check macro
+// _DEBUG: debug mode
+// NDEBUG: release mode
 #if defined(NDEBUG)
 #define CUDA_CHECK(x)	(x)
 #else
