@@ -1,6 +1,4 @@
-//
-// Created by hyunkoo on 24. 7. 16.
-//
+/* (c) 2021-2022. biztripcru@gmail.com. All rights reserved. */
 
 #include "cuda.h"
 #include "cuda_runtime.h"

@@ -1,3 +1,5 @@
+/* (c) 2021-2022. biztripcru@gmail.com. All rights reserved. */
+
 #include <stdio.h>
 #include <time.h>
 #include <chrono>

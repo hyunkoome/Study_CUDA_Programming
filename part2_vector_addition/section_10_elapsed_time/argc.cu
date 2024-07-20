@@ -1,3 +1,5 @@
+/* (c) 2021-2022. biztripcru@gmail.com. All rights reserved. */
+
 #include <stdio.h>
 
 int main(int argc, char* argv[], char* envp[]) {

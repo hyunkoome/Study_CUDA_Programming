@@ -83,7 +83,9 @@ template <typename TYPE>
 TYPE getSum( const TYPE* pSrc, int num ) {
 	register TYPE sum = static_cast<TYPE>(0);
 	// add 128K elements in a chunk
-	const int chunk = 128 * 1024;
+	const int chunk = 128 * 1024; // 128000개씩 끊어서
+
+    // 128000개씩 끊어서, 그만큼을 루프 돌려서 합계를 구함 => partial 에 더해짐
 	while (num > chunk) {
 		register TYPE partial = static_cast<TYPE>(0);
 		register int n = chunk;
@@ -94,6 +96,8 @@ TYPE getSum( const TYPE* pSrc, int num ) {
 		num -= chunk;
 	}
 	// add remaining elements
+    // partial 을 다시 총합 sum 에 더하는 방식으로 함
+    // why? 오차 줄일려고.
 	register TYPE partial = static_cast<TYPE>(0);
 	while (num--) {
 		partial += *pSrc++;

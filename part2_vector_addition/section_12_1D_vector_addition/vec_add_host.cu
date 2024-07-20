@@ -1,5 +1,7 @@
+/* (c) 2021-2022. biztripcru@gmail.com. All rights reserved. */
 #include "./common.cpp"
 
+// using cpu
 // 100만개 난수 발생하여 데이터 입력
 // 0.0 <= x < 1 , 즉, [0.000, 1.000) 의 float 형식 난수 생성
 // num = (rand() % 1000) / 1000.0F

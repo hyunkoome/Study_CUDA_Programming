@@ -1,3 +1,5 @@
+/* (c) 2021-2022. biztripcru@gmail.com. All rights reserved. */
+
 #include <stdio.h>
 #include <cuda.h>
 #include <cuda_runtime_api.h>
