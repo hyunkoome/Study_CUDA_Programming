@@ -44,9 +44,9 @@
 
 [Section 13: GIGA 개수 덧셈, CPU vs CUDA](./doc/section13.md)
 -`giga_add_host_cpu.cu`
-- 256M 개
-  - 362615 usec = 0.36초
-  - 에러 0
+  - 256M 개
+    - 362615 usec = 0.36초
+    - 에러 0
 - `giga_add_cuda_single_core.cu`
   - 12505577 usec = 12.5초
   - 꽤 느리더라
@@ -58,3 +58,10 @@
     - elapsed time (usec) = # of clock ticks * 1000.0f / clock frequency (kHz)
 - `giga_add_augmentation.cu`
   - 실행시 augment 처리 (SIZE 값 넣을 수 있게..) 
+
+[Section 14: AXPY and FMA](./doc/section14.md)
+- AXPY : a X plus Y problem
+- FMA : `fused multiply-add` instruction
+- LERP: linear interpolation 문제에 적용
+
+
