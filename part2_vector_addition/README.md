@@ -42,3 +42,17 @@
     - C++ 바꾸면 클래스 핸들링하고 하는데, 시간이 조금 더 걸릴 수 있음
     - `확장성 등 고려해서, 코드는 가능하면 C 형태로 사용하는 것이 좋다!`
 
+[Section 13: GIGA 개수 덧셈, CPU vs CUDA](./doc/section13.md)
+-`giga_add_host_cpu.cu`
+- 256M 개
+  - 362615 usec = 0.36초
+  - 에러 0
+- `giga_add_cuda_single_core.cu`
+  - 12505577 usec = 12.5초
+  - 꽤 느리더라
+- `giga_add_cuda_single_core.cu`
+  - 3596 usec = 0.0036초
+  - cpu 보다 빨라진거 확인 함
+- `giga_add_clock.cu`
+  - 커널 함수 내에서 elapsed time (usec) 계산 방법 
+    - elapsed time (usec) = # of clock ticks * 1000.0f / clock frequency (kHz)
