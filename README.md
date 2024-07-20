@@ -88,6 +88,4 @@ make
       - single precision
       - linear interpolation
     - thread and GPU
-  
-
 
