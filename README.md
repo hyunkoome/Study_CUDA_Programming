@@ -64,12 +64,30 @@ sudo make install
 - $ nvcc -V (now you should get the NVIDIA CUDA Compiler messages)
 
 ### CUDA Tutorial
-- `part1_cuda_kernel`: [Start CUDA programming](./part1_cuda_kernel/README.md)
-  - print hello cuda (on Ubuntu) 
-  - memory copy
-  - add vector by using cpu or CUDA
-  - error check
-- 
+- in each section, build the project as shown below and run the generated file.
+```shell
+mkdir build
+cd build
+cmake ..
+make
+./generated_execution_file
+```
+
+- This tutorial is structured as follows:
+  - `part1_cuda_kernel`: [Start CUDA programming](./part1_cuda_kernel/README.md)
+    - print hello cuda (on Ubuntu) 
+    - memory copy
+    - add vector by using cpu or CUDA
+    - error check
+  - `part2_vector_addition`: [Study CUDA kernel launch](./part2_vector_addition/README.md)
+    - elapsed time
+    - CUDA kernel launch
+    - 1d vector addition
+    - Giga vector addition
+    - AXPY and FMA
+      - single precision
+      - linear interpolation
+    - thread and GPU
   
 
 
