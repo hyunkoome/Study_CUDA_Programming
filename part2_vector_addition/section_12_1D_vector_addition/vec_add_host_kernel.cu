@@ -19,6 +19,7 @@ int main(void) {
 	srand( 0 );
 	setNormalizedRandomData( vecA, SIZE );
 	setNormalizedRandomData( vecB, SIZE );
+
 	// kernel execution
 	ELAPSED_TIME_BEGIN(0);
 
@@ -42,6 +43,7 @@ int main(void) {
 	printVec( "vecA", vecA, SIZE );
 	printVec( "vecB", vecB, SIZE );
 	printVec( "vecC", vecC, SIZE );
+
 	// cleaning
 	delete[] vecA;
 	delete[] vecB;
