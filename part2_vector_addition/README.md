@@ -64,4 +64,18 @@
 - FMA : `fused multiply-add` instruction
 - LERP: linear interpolation 문제에 적용
 
+[Section 15: thread and GPU](./doc/section15.md)
+- CUDA hardware
+- Transparent Scalability 확장성 
+  - SM 에 들어있는 독립 unit 이 실제로 계산을 위한 processing unit이 됨, 즉 단위가 됨 
+  - thread block scheduling
+  - `thread block 사용하는 이유에 대해서 구체적으로 설명`
+- Thread and Warp
+- CUDA thread scheduling
+  - wrap sheduling
+- Overall execution model
+- 실습: warp_lane.cu - warp ID, lane ID check
+  - 컴파일: nvcc -o warp_lane warp_lane.cu 
+  - cmake 로 컴파일시 에러가 남 (fix 필요!)
+
 
