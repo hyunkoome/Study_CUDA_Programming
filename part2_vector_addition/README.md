@@ -56,3 +56,5 @@
 - `giga_add_clock.cu`
   - 커널 함수 내에서 elapsed time (usec) 계산 방법 
     - elapsed time (usec) = # of clock ticks * 1000.0f / clock frequency (kHz)
+- `giga_add_augmentation.cu`
+  - 실행시 augment 처리 (SIZE 값 넣을 수 있게..) 
