@@ -14,6 +14,8 @@
 - 3D Pitched Matrix 함수들
 
 [Section 19: memory_hierarchy 메모리 계층 구조](./doc/section19.md)
+- Shared Memory in CUDA
+- CUDA variable 변수
 
 [Section 20~21: adjacent differences 인접 원소끼리 차이 구하기](./doc/section20_21.md)
 
