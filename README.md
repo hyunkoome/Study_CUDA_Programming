@@ -88,4 +88,10 @@ make
       - single precision
       - linear interpolation
     - thread and GPU
+  - `part3_memory_structure`: [Memory Structure](./part3_memory_structure/README.md)
+    - 메모리 계층 구조
+    - CUDA 전용의 2D 메모리 할당 함수, pitched point 사용법 
+    - 3D 행렬 사용 및 pitched point 사용법
+    - CUDA 메모리 계층 구조
+    - 인접 원소끼리 차이 구하기: shared memory 활용 
 
