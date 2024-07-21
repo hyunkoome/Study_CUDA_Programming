@@ -1,0 +1,107 @@
+#include "./common.cpp"
+
+// input parameters
+unsigned vecSize = 1024 * 1024 * 1024; // big-size elements
+float lerp_t = 0.234F;
+
+// CUDA kernel function
+__global__ void kernel_lerp( float* z, const float t, const float* x, const float* y, unsigned n ) {
+	unsigned i = blockIdx.x * blockDim.x + threadIdx.x; // CUDA-provided index
+	if (i < n) {
+		z[i] = (1.0F - t) * x[i] + t * y[i];
+	}
+}
+
+int main( const int argc, const char* argv[] ) {
+	// argv processing
+	switch (argc) {
+	case 1:
+		break;
+	case 2:
+		vecSize = procArg( argv[0], argv[1], 1 );
+		break;
+	case 3:
+		vecSize = procArg( argv[0], argv[1], 1 );
+		lerp_t = procArg<float>( argv[0], argv[2] ); // float 형으로 함수를 불러라!
+		break;
+	default:
+		printf("usage: %s [num] [a]\n", argv[0]); // 프로그램 SIZE a값
+		exit( EXIT_FAILURE );
+		break;
+	}
+	if (vecSize < 1) {
+		printf("%s: ERROR: invalid num = %d\n", argv[0], vecSize);
+		exit(EXIT_FAILURE); // EINVAL: invalid argument
+	}
+	// host-side data
+	float* vecX = nullptr;
+	float* vecY = nullptr;
+	float* vecZ = nullptr;
+	try {
+		vecX = new float[vecSize];
+		vecY = new float[vecSize];
+		vecZ = new float[vecSize];
+	} catch (const exception& e) {
+		printf("C++ EXCEPTION: %s\n", e.what());
+		exit(1);
+	}
+	// set random data
+	srand( 0 );
+	setNormalizedRandomData( vecX, vecSize );
+	setNormalizedRandomData( vecY, vecSize );
+	// device-side data
+	float* dev_vecX = nullptr;
+	float* dev_vecY = nullptr;
+	float* dev_vecZ = nullptr;
+	// allocate device memory
+	cudaMalloc( (void**)&dev_vecX, vecSize * sizeof(float) );
+	cudaMalloc( (void**)&dev_vecY, vecSize * sizeof(float) );
+	cudaMalloc( (void**)&dev_vecZ, vecSize * sizeof(float) );
+	CUDA_CHECK_ERROR();
+	// copy to device from host
+	ELAPSED_TIME_BEGIN(1);
+	cudaMemcpy( dev_vecX, vecX, vecSize * sizeof(float), cudaMemcpyHostToDevice );
+	cudaMemcpy( dev_vecY, vecY, vecSize * sizeof(float), cudaMemcpyHostToDevice );
+	CUDA_CHECK_ERROR();
+	// CUDA kernel launch
+	dim3 dimBlock( 1024, 1, 1 );
+	dim3 dimGrid( (vecSize + dimBlock.x - 1) / dimBlock.x, 1, 1 );
+	CUDA_PRINT_CONFIG( vecSize );
+	ELAPSED_TIME_BEGIN(0);
+	kernel_lerp <<< dimGrid, dimBlock>>>( dev_vecZ, lerp_t, dev_vecX, dev_vecY, vecSize );
+	cudaDeviceSynchronize();
+	ELAPSED_TIME_END(0);
+	CUDA_CHECK_ERROR();
+	// copy to host from device
+	cudaMemcpy( vecZ, dev_vecZ, vecSize * sizeof(float), cudaMemcpyDeviceToHost );
+	CUDA_CHECK_ERROR();
+	ELAPSED_TIME_END(1);
+	// free device memory
+	cudaFree( dev_vecX );
+	cudaFree( dev_vecY );
+	cudaFree( dev_vecZ );
+	CUDA_CHECK_ERROR();
+	// check the result
+	float sumX = getSum( vecX, vecSize );
+	float sumY = getSum( vecY, vecSize );
+	float sumZ = getSum( vecZ, vecSize );
+	float diff = fabsf( sumZ - ((1.0F - lerp_t) * sumX + lerp_t * sumY) );
+	printf("SIZE = %d\n", vecSize);
+	printf("t    = %f\n", lerp_t);
+	printf("sumX = %f\n", sumX);
+	printf("sumY = %f\n", sumY);
+	printf("sumZ = %f\n", sumZ);
+	printf("diff(sumZ, (1-t)*sumX+t*sumY) =  %f\n", diff);
+	printf("diff(sumZ, (1-t)*sumX+t*sumY)/SIZE =  %f\n", diff / vecSize);
+	printVec( "vecX", vecX, vecSize );
+	printVec( "vecY", vecY, vecSize );
+	printVec( "vecZ", vecZ, vecSize );
+	// cleaning
+	delete[] vecX;
+	delete[] vecY;
+	delete[] vecZ;
+	// done
+	return 0;
+}
+
+/* (c) 2021-2022. biztripcru@gmail.com. All rights reserved. */

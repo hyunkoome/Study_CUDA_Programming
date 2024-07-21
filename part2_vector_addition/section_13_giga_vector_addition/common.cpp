@@ -83,7 +83,9 @@ template <typename TYPE>
 TYPE getSum( const TYPE* pSrc, int num ) {
 	register TYPE sum = static_cast<TYPE>(0);
 	// add 128K elements in a chunk
-	const int chunk = 128 * 1024;
+	const int chunk = 128 * 1024; // 128000개씩 끊어서
+
+    // 128000개씩 끊어서, 그만큼을 루프 돌려서 합계를 구함 => partial 에 더해짐
 	while (num > chunk) {
 		register TYPE partial = static_cast<TYPE>(0);
 		register int n = chunk;
@@ -94,6 +96,8 @@ TYPE getSum( const TYPE* pSrc, int num ) {
 		num -= chunk;
 	}
 	// add remaining elements
+    // partial 을 다시 총합 sum 에 더하는 방식으로 함
+    // why? 오차 줄일려고.
 	register TYPE partial = static_cast<TYPE>(0);
 	while (num--) {
 		partial += *pSrc++;
@@ -253,8 +257,6 @@ void print3D( const char* name, float* ptr, int dimz, int dimy, int dimx ) {
 }
 
 // CUDA error check macro
-// _DEBUG: debug mode
-// NDEBUG: release mode
 #if defined(NDEBUG)
 #define CUDA_CHECK(x)	(x)
 #else
@@ -327,7 +329,13 @@ chrono::system_clock::time_point __time_begin[8] = { chrono::system_clock::now()
 	} while (0)
 
 // argument processing
-
+/* 1)좀 더 다양한 처리 추가
+ * - int, float 모두 가능
+ * - bound 체크 추가: 범위를 벗어나면 error
+ * 2) K, M 의 의미를 추가
+ * - 16K = 16 * 1024
+ * - 32M = 32 * 1024 * 1024
+*/
 template <typename TYPE>
 TYPE procArg( const char* progname, const char* str, TYPE lbound = -1, TYPE ubound = -1) {
 	char* pEnd = nullptr;
