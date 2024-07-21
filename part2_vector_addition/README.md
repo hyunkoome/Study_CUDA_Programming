@@ -76,6 +76,5 @@
 - Overall execution model
 - 실습: warp_lane.cu - warp ID, lane ID check
   - 컴파일: nvcc -o warp_lane warp_lane.cu 
-  - cmake 로 컴파일시 에러가 남 (fix 필요!)
 
 

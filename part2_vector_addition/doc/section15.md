@@ -61,4 +61,16 @@
   - 안그러면, 메모리 접근하는 시간이 오래 걸려서, CUDA 사용이 느려질 수도 있어서
   - 항상 20개 이상은 돌리는게, CUDA 성능이 최고로 올라가더라..
 
+***warp id, lane id***
+- 1 warp = 32 threads
+  - lane: `warp` 내에서 각 thread 의 index (0~31)
+  - thread index 와는 다름: `thread index` 는 `블럭` 내에서 각 thread 의 index  
+- warp id: SM 내에서 특정 `warp의 ID number`
+  - SM 단위로 관리 -> globally unique 하지는 않음 (다른 SM에 동일 warp id 가능)
+  - warp id를 가져오는 함수는 `없음`
+  - GPU assembly instruction 으로 체크 가능
+- lane id: 1개 `warp 내에서`, `자신의 lane ID number`
+  - 마찬가지로, lane id를 가져오는 함수는 `없음`
+  - GPU assembly instruction 으로 체크 가능
+
 [Return Par2 Vector Addition](../README.md)  
