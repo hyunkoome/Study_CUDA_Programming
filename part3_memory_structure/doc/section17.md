@@ -1,7 +1,7 @@
 # Memory Structure
 
 ### cuda malloc 2D: CUDA 전용의 2D 메모리 할당 함수 
-- Memory Coalescing 코얼리싱, 합볍
+- Memory Coalescing 코얼리싱, 합병 
   - 메모리 효율을 높이는 방법
     - chunks 청크, 덩어리 사용
     - 보통 32/64/128 bytes 단위로 사용

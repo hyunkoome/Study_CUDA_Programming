@@ -100,6 +100,7 @@ int main(const int argc, const char* argv[]) {
 	paramB.kind = cudaMemcpyHostToDevice;
 	cudaMemcpy3D( &paramB );
 	CUDA_CHECK_ERROR();
+
 	// CUDA kernel launch
 	dim3 dimBlock(8, 8, 8);
 	dim3 dimGrid(div_up(dimImage.x, dimBlock.x), div_up(dimImage.y, dimBlock.y), div_up(dimImage.z, dimBlock.z));
@@ -110,6 +111,7 @@ int main(const int argc, const char* argv[]) {
 	cudaDeviceSynchronize();
 	ELAPSED_TIME_END(0);
 	CUDA_CHECK_ERROR();
+
 	// copy to host from device
 	paramC.srcPos = pos_origin;
 	paramC.srcPtr = dev_pitchedC;
@@ -120,11 +122,13 @@ int main(const int argc, const char* argv[]) {
 	cudaMemcpy3D( &paramC );
 	CUDA_CHECK_ERROR();
 	ELAPSED_TIME_END(1);
+
 	// free device memory
 	cudaFree( dev_pitchedA.ptr );
 	cudaFree( dev_pitchedB.ptr );
 	cudaFree( dev_pitchedC.ptr );
 	CUDA_CHECK_ERROR();
+
 	// check the result
 	float sumA = getSum( matA, dimImage.z * dimImage.y * dimImage.x );
 	float sumB = getSum( matB, dimImage.z * dimImage.y * dimImage.x );
