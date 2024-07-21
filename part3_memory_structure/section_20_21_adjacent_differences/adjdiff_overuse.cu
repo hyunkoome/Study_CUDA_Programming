@@ -18,6 +18,7 @@ __global__ void kernelAdjDiff(float* b, const float* a, unsigned num) {
 		} else { // i == 0
 			b[i] = s_data[tx] - 0.0f;
 		}
+        // data update 이후에도 __syncthreads() 를 해줘도 나쁠것은 없지 않을까?  ==> 속도저하를 가져옴. 하지말것!!
 		__syncthreads();
 	}
 }

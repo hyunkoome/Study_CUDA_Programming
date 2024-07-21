@@ -68,6 +68,8 @@ int main(const int argc, const char* argv[]) {
 	dim3 dimGrid(div_up(num, dimBlock.x), 1, 1);
 	CUDA_PRINT_CONFIG( num );
 	ELAPSED_TIME_BEGIN(0);
+
+    // blocksize (1,024 개) * sizeof(float): blocksize 당 float 1개 씩 필요, sizeof(float) 로 float 의 bytes 수 계산
 	kernelAdjDiff <<< dimGrid, dimBlock, blocksize * sizeof(float)>>>( dev_vecB, dev_vecA, num );
 	cudaDeviceSynchronize();
 	ELAPSED_TIME_END(0);
