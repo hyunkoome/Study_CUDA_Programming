@@ -119,6 +119,56 @@ cd /home/hyunkoo/DATA/HDD8TB/CUDA/cuda-samples-12.1/bin/x86_64/linux/release
   - device 마다 test 필요
   - 그러나, `복잡한 경우에는 shared memory를 쓰면 확실히 빠름` 
 
+***kernel 함수 내에서 pointer 사용 가능***
+- 심지어 모든 memory space 로 지시 가능
+```c++
+__device__ int my_global_variable;
+__constant__ int my_constant_variable = 13;
+__global__ void foo(void) 
+{
+  __shared__ int my_shared_variable;
+  int*
+  ptr_to_global = &my_global_variable;
+  const int* ptr_to_constant = &my_constant_variable;
+  int*
+  ptr_to_shared = &my_shared_variable;
+  ...
+  *ptr_to_global = *ptr_to_shared;
+}
+```
+- 그러나, Pointers 가 shared 메모리등 , 특정 메모리 공간을 직접 가리키지는 않음
+- `__shared__ int* ptr;`
+  - ptr 이 shared 메모리에 위치한다는 의미
+  - pointer 가 shared 메모리를 가리킨다는 의미는 아님
+    - 어느, 메모리 공간이든 가리킬수 있음, 
+    - `글로벌 메모리, 콘스트 메모리, 쉐어드 메모리, 로컬 메모리.. 등 어디든지 가리킬수 있음`
+    - 다만, `레지스터는 포인트로 가리킬수 없음`
+- 같은 warp 내에서 pointer 들이 다른 메모리 영역들을 access 하면, 
+  - CUDA 시스템이 crash 되거나 또는 성능 저하가 일어남.
+- 그래서, CUDA 가이드는 pointer 변수를 꼭 써야한다면. 
+  - 가능하면, 간단하고, 심플하고 레귤러하게
+  - 즉, 예상 가능하도록 사용하라고 함.  - 
+- 그래서, 포인터의 포인터. 즉 링크드 리스트나, 트리같은 구조는 
+  - 가능하면 GPU에서 쓰지 말라는게 가이드임
+- compiler warning message 에 주의할 것
+  - Warning: Cannot tell what pointer points to, assuming global memory space
+  - 나중에 system crash 가능 ..
+- 즉, 모든 포인터가 글로벌 메모리를 가리키도록 하거나, 
+  - 모든 포인터가 쉐어드 메모리를 가리키도록 하는등
+  - 심플하고 레귤러하게 쓰는 식으로 처리 해라!!
+
+***Kernel function parameter의 memory space***
+- kernel function call 시의 처리
+  - 기본적으로 call-by-value
+  - struct를 넘기면, 그대로 copy 됨
+- `pointer 값은 모두 CUDA global memory space 로 assume 가정` 
+  - int dim[3] 처럼, array 를 넘길때는
+    - kernel function 은 int* dim 으로 인식
+    - CDUA global memory space 에서 dim 을 찾음
+    - `배열을 넘겨도 글로벌 메모리에 있다고 가정하고, 저걸 찾습니다.`
+  - 흔한 실수: dim 이 host space 에 있으면, error 발생 !
+- `그래서, 커널에 어떤 파라미터로 뭘 넘길때는,` 
+  - `항상 글로벌 메모리에 있는 것을 넘겨줘야 된다!!`
 
 
 [Return Par3 Memory Structure](../README.md)  
