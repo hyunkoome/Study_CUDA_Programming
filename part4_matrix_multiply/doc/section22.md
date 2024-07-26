@@ -1,5 +1,18 @@
 # Memory Structure
 
+***Matrix Copy***
+- simply copy a matrix to another
+  - C[i,j] = A[i,j]
+  - `pitched matrices` for the best performance
+  - for simplicity, we assume `square matrices`
+- 다른 matrix 연산의 입장에서는?
+  - theoretical limit 이론적 한계for matrix operations
+  - the best score 최고 기록 for any matrix operations 행렬 대입 연산이 최고 기록이다.
+  - 따라서 다른 연산, 즉 더하기 연산 등은 이 행렬 대입연산의 속도에 근접할 수록 최적화가 잘 된것이고
+  - 이 기록을 추월했다면, 만세를 부를게 아니라, 뭔가 잘 못된 것임
+    - 즉, 연산의 물체를 발견할 수 있는 어떤 기준이 될수도 있음
+
+
 ***matrix copy – theoretical limit***
 - CPU version
   - 실행 시간: 0.43초
@@ -68,17 +81,7 @@
   - 그래서, `사실은 이것이.. 우리가 CUDA 프로그래밍할때 기준이 되는, 속도 레퍼런스가 됨`
     - 이것 보다 더 빠른 알고리즘을 우리가 CUDA에 구현하는 것은 불가능함.
 
-***Matrix Copy***
-- simply copy a matrix to another
-  - C[i,j] = A[i,j]
-  - `pitched matrices` for the best performance
-  - for simplicity, we assume `square matrices`
-- 다른 matrix 연산의 입장에서는?
-  - theoretical limit 이론적 한계for matrix operations
-  - the best score 최고 기록 for any matrix operations 행렬 대입 연산이 최고 기록이다.
-  - 따라서 다른 연산, 즉 더하기 연산 등은 이 행렬 대입연산의 속도에 근접할 수록 최적화가 잘 된것이고
-  - 이 기록을 추월했다면, 만세를 부를게 아니라, 뭔가 잘 못된 것임
-    - 즉, 연산의 물체를 발견할 수 있는 어떤 기준이 될수도 있음
+
 
 
 
