@@ -1,4 +1,4 @@
-# Memory Structure
+# Matrix Multiply
 
 ***신형 CUDA device 개선점***
 - SM: streaming multiprocessor

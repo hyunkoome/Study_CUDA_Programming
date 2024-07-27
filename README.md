@@ -94,4 +94,11 @@ make
     - 3D 행렬 사용 및 pitched point 사용법
     - CUDA 메모리 계층 구조
     - 인접 원소끼리 차이 구하기: shared memory 활용 
-
+  - `part4_matrix_multiply`: [Matrix Multiply](./part4_matrix_multiply/README.md)
+    - matrix copy
+    - Matrix Transpose 전치 행렬
+    - Matrix Multiplication
+    - GEMM: general matrix-to-matrix multiplication
+    - 메모리에 따른 CUDA 변수 스피드 측정
+    - 정밀도와 속도개선
+  

@@ -1,4 +1,4 @@
-# Memory Structure
+# Matrix Multiply
 
 ***floating point numbers 실수 표현 방법***
 - IEEE 754 floating-point standard `부동 소수점 방식` 

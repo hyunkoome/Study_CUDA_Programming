@@ -1,4 +1,4 @@
-# Memory Structure
+# Matrix Multiply
 
 ***Matrix Transpose 전치 행렬***
 - C = A^T = A^tr

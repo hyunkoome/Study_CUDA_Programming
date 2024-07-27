@@ -1,4 +1,4 @@
-# Memory Structure
+# Matrix Multiply
 
 ***Matrix Copy***
 - simply copy a matrix to another

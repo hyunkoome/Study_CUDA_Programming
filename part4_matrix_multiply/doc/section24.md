@@ -1,4 +1,4 @@
-# Memory Structure
+# Matrix Multiply
 
 ***Matrix Multiplication***
 - for simplicity, we assume `square matrices` `정방 행렬`

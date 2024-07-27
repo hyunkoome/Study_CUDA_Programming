@@ -1,4 +1,4 @@
-# Memory Structure
+# Matrix Multiply
 
 ***GEMM***
 - general matrix-to-matrix multiplication
