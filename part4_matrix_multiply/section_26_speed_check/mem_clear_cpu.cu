@@ -1,7 +1,7 @@
 #include "./common.cpp"
 
 // input parameters
-unsigned num = 32 * 1024 * 1024; // num of data
+unsigned num = 32 * 1024 * 1024; // num of data, 32M 개
 
 int main( const int argc, const char* argv[] ) {
 	// argv processing
