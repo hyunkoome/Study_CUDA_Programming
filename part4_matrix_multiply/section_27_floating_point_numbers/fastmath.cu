@@ -1,5 +1,5 @@
 #include "./common.cpp"
-#define _USE_MATH_DEFINES // to use M_PI
+#define _USE_MATH_DEFINES // to use M_PI, 프로그램 내에, math.h의 M_PI를 사용하는 것이 가능하도록 하기 위해서.
 #include <math.h>
 
 // input parameters
