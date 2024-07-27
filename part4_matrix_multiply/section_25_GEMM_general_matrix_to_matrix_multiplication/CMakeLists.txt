@@ -4,6 +4,8 @@ project(gemm_cpu_outerK CUDA)
 project(gemm_cuda_globalmem CUDA)
 project(gemm_cuda_alignedTile CUDA)
 project(gemm_cuda_tile CUDA)
+project(gemm_cuda_tile_optim CUDA)
+
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -38,6 +40,11 @@ add_executable(gemm_cuda_tile
         common.cpp
 )
 
+add_executable(gemm_cuda_tile_optim
+        gemm_cuda_tile_optim.cu
+        common.cpp
+)
+
 
 set_target_properties(
         gemm_cpu
@@ -45,6 +52,7 @@ set_target_properties(
         gemm_cuda_globalmem
         gemm_cuda_alignedTile
         gemm_cuda_tile
+        gemm_cuda_tile_optim
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )

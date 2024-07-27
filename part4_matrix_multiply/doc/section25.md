@@ -33,14 +33,26 @@
     - (8k x 8k): 330,170 usec = 0.330 초
 - CUDA aligned tile `gemm_cuda_alignedTile.cu`
   - tile 크기를 32x32 로 가정
-  - matrix 크기 를 32의 배수로 가정, (4k x 4k 사용)
+  - `matrix 크기 를 32의 배수로 가정`, (4k x 4k 사용)
   - 실행 시간
     - (4k x 4k): 36,619 usec = 0.036 초
     - (8k x 8k): 267,321 usec = 0.267 초
 - CUDA general tile `gemm_cuda_tile.cu`
-  - matrix 크기를 임의로 변경 가능 (4000 x 4000 도 가능)
+  - matrix 크기를 `임의로 변경 가능` (4000 x 4000 도 가능)
+  - `gemm_cuda_alignedTile.cu` 보다 `다소 속도는 떨어지더라도, 임의로 변경가능하게 구현해야 할때는 대비하기 위해` 
   - 실행 시간
-    - (4000 x 4000): 35,769 usec = 0.035 초
+    - (4000 x 4000): 34,939 usec = 0.034 초
+    - (4k x 4k): 39,068 usec = 0.039 초 
     - (8000 x 8000): 260,448 usec = 0.260 초
+    - (8k x 8k): 298,069 usec = 0.298 초 
+- CUDA general tile `gemm_cuda_tile_optim.cu`
+  - matrix 크기를 `임의로 변경 가능` (4000 x 4000 도 가능)
+  - `gemm_cuda_tile.cu` 좀더 `최적화`, 첫번째 if 문 삭제..
+  - `gemm_cuda_alignedTile.cu` 보다 `다소 속도는 떨어지더라도, 임의로 변경가능하게 구현해야 할때는 대비하기 위해`
+  - 실행 시간
+    - (4000 x 4000): 34,356 usec = 0.034 초
+    - (4k x 4k): 37,862 usec = 0.037 초
+    - (8000 x 8000): 259,454 usec = 0.259 초
+    - (8k x 8k): 282,715 usec = 0.282 초
 
 [Return Par4 Matrix Multiply](../README.md)  

@@ -21,15 +21,16 @@ __global__ void kernelGEMM( float* Z, const float* A, const float* B, const floa
 		remaining -= TILE_WIDTH;
 
         // 속도 개선을 위해 앞쪽 tile 에서는 if 문 없이 막 돌릴고, 뒤쪽 tile 에서는 if문 돌리는 경우도 있음
-        // (gemm_cuda_tile_optim.cu 참고)
-		if (gy < matsize && threadIdx.x < nelem) {
-			register unsigned idxA = gy * pitch_in_elem + (tile * TILE_WIDTH + threadIdx.x);
-			s_A[threadIdx.y][threadIdx.x] = A[idxA];
-#if defined(_DEBUG)
-		} else {
-			s_A[threadIdx.y][threadIdx.x] = 0.0f;
-#endif
-		}
+        register unsigned idxA = gy * pitch_in_elem + (tile * TILE_WIDTH + threadIdx.x);
+        s_A[threadIdx.y][threadIdx.x] = A[idxA];
+//		if (gy < matsize && threadIdx.x < nelem) {
+//			register unsigned idxA = gy * pitch_in_elem + (tile * TILE_WIDTH + threadIdx.x);
+//			s_A[threadIdx.y][threadIdx.x] = A[idxA];
+//#if defined(_DEBUG)
+//		} else {
+//			s_A[threadIdx.y][threadIdx.x] = 0.0f;
+//#endif
+//		}
 		if (gx < matsize && threadIdx.y < nelem) {
 			register unsigned idxB = (tile * TILE_WIDTH + threadIdx.y) * pitch_in_elem + gx;
 			s_B[threadIdx.y][threadIdx.x] = B[idxB];
