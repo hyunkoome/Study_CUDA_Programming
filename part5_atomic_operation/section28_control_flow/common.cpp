@@ -12,6 +12,8 @@
 #include <cuda_runtime.h>
 #endif
 
+#include <typeinfo>
+
 #include <iostream>
 #include <iomanip>
 #include <chrono>

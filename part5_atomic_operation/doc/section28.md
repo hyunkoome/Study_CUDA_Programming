@@ -1,88 +1,119 @@
-# Matrix Multiply
+# Control Flow Overview
 
-***Matrix Copy***
-- simply copy a matrix to another
-  - C[i,j] = A[i,j]
-  - `pitched matrices` for the best performance
-  - for simplicity, we assume `square matrices`
-- 다른 matrix 연산의 입장에서는?
-  - theoretical limit 이론적 한계for matrix operations
-  - the best score 최고 기록 for any matrix operations 행렬 대입 연산이 최고 기록이다.
-  - 따라서 다른 연산, 즉 더하기 연산 등은 이 행렬 대입연산의 속도에 근접할 수록 최적화가 잘 된것이고
-  - 이 기록을 추월했다면, 만세를 부를게 아니라, 뭔가 잘 못된 것임
-    - 즉, 연산의 물체를 발견할 수 있는 어떤 기준이 될수도 있음
+- SM architecture
+  - 1 CU + 32 cores
+- if 문 과 for loop 문 어떻게 최적화 할것인지?
+  - divergent cases
+    - if statements
+    - for-loop iterations
+- 숫자를 서로 섞어야 하는 예제에서..even-odd 와 half-by-half 어떻게 구현하는지, 그리고 수행 시간..
+  - Example: shuffling cases 
+    - even-odd
+    - half-by-half
+    - even-odd, shared mem
+    - half-by-half, shared mem
+
+# Control Flow
+- 요즘 GPU는 보통 2개의 unit으로 구성되며,
+- 1개의 unit 안에는 32개의 SP (= FP32 core), 8개의 SFU(수학함수 등 연산 유닛), 1개의 CU (컨트롤 유닛) 으로 구성
+- 그런데, 문제는 CU (= warp 와프 스케쥴러)는 1개뿐임.
+  - 1개의 warp 는 32개의 쓰래드로 구성되어 있고, CU 1개로 32개 쓰래드를 동시에 병렬로 control 해야 함
+  - 1개의 warp 내에서, 서로 다른 path를 수행해야 하는 경우(divergent branches: if-else, for-loop) 에
+  - CU 1개로 수행하다보니, 어쩔수 없이 serialized (순차 수행) 
+  - 서로다른 warp 에서 서로다른 path를 수행하는 것은 performance에 영향이 없음
+- algorithm-level optimization (if 문)
+  - even-odd case
+    - warp 내 모든 쓰래드가
+    - if-part, else-part를 모두 수행
+    - 속도가 좀 느려질 수도 있음 
+  - half-by-half case
+    - warp 전체가 if-part 또는 else-part 중 1개만 수행
+    - 속도면에서, even-odd case 보다 이득을 봄 
+- algorithm-level optimization (for-loop)
+  - for 돌아야 하는 루프의 최대로 잡아서.. 돌림 
+- Example: Shuffling Problem
+  - even numbered items → left half
+    - 각 thread 는 source 입장에서 해석
+      - even-numbered threads: `dst[gx / 2] = src[gx];` 
+      - odd-numbered threads: `dst[HALF + gx / 2] = src[gx];`
+      ```c++
+      if (gx % 2 == 0) 
+      {
+        dst[gx / 2] = src[gx];
+      }
+      else 
+      {
+        dst[HALF + gx / 2] = src[gx];
+      }
+      ```
+  - odd numbered items → right half
+    - 각 thread 는 destination 입장에서 해석 
+      - left-half threads: `dst[gx] = src[gx * 2];`
+      - right-half threads: `dst[gx] = src[(gx – HALF) * 2 + 1];`
+      ```c++
+      if (gx < HALF) 
+      { // left half
+          dst[gx] = src[gx * 2];
+      } 
+      else 
+      {
+          dst[gx] = src[(gx - HALF) * 2 + 1];
+      }
+      ```
+  - `evenodd.cu`
+    - 연산 시간: 2,483 usec
+  - `halfhalf.cu`
+    - 연산 시간: 3,564 usec
+    - evenodd 케이스가 더 느릴거라고 생각했는데, 
+      - 의외로 half-and-half 쪽이, 컨트롤 플로우 입장에서는 더 적은 일을 했는데도,
+      - 수행시간은 더 걸려버린 상황이 생겼음
+    - 원인 분석
+      - global memory 접근 횟수의 차이
+        - even-odd 케이스: memory access 에 겹치는 부분이 없음
+        - half-by-half 케이스: read access 에서 중복 발생, 안그래도 global 메모리 읽을때 느린데..
+          - control flow 최적화 해도, 메모리를 2번 읽어오는데, 빨라질수 없음. even-odd 케이스 더 빠름
+- 근데 왜? CUDA 프로그래머들은 `half-by-half`를 `선호`할까?? 
+  - ***shared 메모리를 사용하면 half-by-half 를 사용해도, 메모리를 1번 읽어오기때문에, half-by-half가 빠름.***
+  - shared memory에서 shared memory로 정리할때, `evenodd` 와 `half-half`를 사용할 예정  
+  - `evenodd_shared.cu`
+    - 연산 시간: 2,527 usec
+    - shared memory 사용하니, 이전에 even-odd 하던 것 보다는 느려질 수 밖에 없고.
+    - 그래도, half-and-half 보다는 빠르다.
+  - `halfhalf_shared.cu`
+    - 연산 시간: 2,484 usec
+    - `shared memory` 에서는 확실히.. `half-and-half` 가 빠르다!! 그래서..선호~~
+
+# Stride 보폭 정의
+- stride : offset between adjacent data elements
+  - 기준 단위: byte 가 아니라, CPU/GPU word (4바이트) 기준
+- 메모리 효율적인 면과, CUDA 속도면에서, SoA 가 AoS 보다 우수함 
+  - Array of Structures (AoS)
+    - ```c++
+      struct recordA {
+        int key; // red
+        int value; // green
+        int flag; // blue
+      };
+      recordA recA[100];
+      ```
+    - 각 데이터를 읽으려면, stride 3로 처리하는 꼴임        
+  - Structure of Arrays (SoA)
+    - ```c++
+        struct recordB {
+          int key[100]; // red
+          int value[100]; // green
+          int flag[100]; // blue
+        };
+        recordB recB;
+        ```
+    - 각 데이터를 읽으려면, stride 1로 처리할 수 있어서. 한번에 처리 가능
+  - 따라서, 최적화 시에는 반드시 global memory access 패턴의 분석이 필요함!
+  
 
 
-***matrix copy – theoretical limit***
-- CPU version
-  - 실행 시간: 0.43초
-- memcpy version
-  - 실행 시간: 0.45초
-  - CPU에서 이중 루프 돌린거 보다 메모리 카피 쓴게 의외로 약간 느림
-    - 이 결과는 메모리 카피가 운영체제에서 지원 되면서, 굉장히 효과적으로 짜여있긴하지만, 
-    - 경우에 따라서는 cashe 상황이나, 혹은 컴파일러가 for 루프를 얼마나 optimize 했느냐에 따라, 
-    - 이런 관계 때문에, `경우에 따라서는 우리가 for 루프 돌려서 직접 짠 것이 더 빠를수도 있다는 것을 보여줌`
-- CUDA naive version – `global memory`
-  - naive : (전문적) 지식이 없는
-  - pitched matrix 를 사용하는 것이 속도가 빠르므로.. 이 방법을 사용
-    - cudaMallocPitch(), cudaMalloc3D() -> 바이트 단위
-    - data: float -> sizeof(float) = 4 bypes
-  - A[y][x] 의 위치 계산: `byte 기준`
-    - offset = y * dev_pitch + x * sizeof(float); // in byte
-    - *((float*)((char*)A + offset) = 0.0f;
-  - A[y][x] 의 위치 계산: `index 기준`
-    - assert(dev_pitch % sizeof(float) == 0);
-    - pitch_in_elem = dev_pitch / sizeof(float);
-    - idx = y * pitch_in_elem + x;
-    - A[idx] = 0.0f;
-  - 실행 시간: 0.0067초
-    - 분명히, cpu 버전들 보다 빨라짐
-    - `글로벌 메모리`를 이용해서, `글로벌 메모리로 읽은` 다음에, `글로벌 메모리로 복사`하는 예제임
-- CUDA `shared memory` version <-- 이 것이.. `속도 측정에 기준이 되는 레퍼런스가 됨`
-  - `tiled approach` 사용 해야함
-    - Tile Size 잡을때,
-      - 가능하면, for simplicity, we assume square matrices, 정방 행렬로 잡아라!!
-      - tile : 정사각형 모양은 선호
-      - `__shared__ float s_mat[32][32];`
-        - 32 x 32 = 1,024 = `최대 쓰래드의 개수`
-        - 1,024 = maximum number of threads in a thread block
-        - 32 = a single warp
-      - old code 에서는 16x16 또는 32x16 사용
-        - 이유: maximum number of threads in a thread block `was 512`
-        - 16 x 16 = 256
-        - 32 x 16 = 512 → 1개의 thread 에서 2개씩 처리 � → 32x32 로 작동
-  - `2d matrix in the global memory`
-    - 글로벌하게 전체 그리드 상에서 하나의 block을 잡을 거고
-    - 이때, global index 사용
-      - gx = blockIdx.x * blockDim.x + threadIdx.x;
-      - gy = blockIdx.y * blockDim.y + threadIdx.y;
-  - `2d sub-matrix in the shared memory`
-    - 그 block 이 shared 메모리로 카피되서 올겁니다.
-    - 이때, 자기 쓰래드 인덱스를 이용해서(local index 사용),
-      - = 어느 위체에 shared 메모리 어느 위치로 가져와야 될지는 쉐어드 메모리 주소 사용하고
-        - tx = threadIdx.x;
-        - ty = threadIdx.y;
-    - 어느 위치에서 가져올 지는 글로벌 메모리 인덱스 사용
-      - gx = blockIdx.x * blockDim.x + threadIdx.x;
-      - gy = blockIdx.y * blockDim.y + threadIdx.y;    
-  - `another 2d matrix in the global memory`
-    - 카피가 끝나면, 역으로 global index 사용해서.. 
-      - gx = blockIdx.x * blockDim.x + threadIdx.x;
-      - gy = blockIdx.y * blockDim.y + threadIdx.y;
-    - 다시, 쉐어드 메모리 데이터를 타겟이되는 글로벌 메모리로 카피
-  - 실행 시간: 0.0073초
-    - 글로벌 메모리 사용 버전과 비교하면, 다소 느리지만, 
-    - 그 이유는 shared 메모리를 한번 더 거쳤으니까, 느릴수 밖에 없다.
-    - `그러나, 일반적으로 shared 메모리에서 행렬 copy가 아닌, 실제 연산등이 추가되므로.`
-    - `이 방법을 사용하는 것을 연습하기를 권장 함`
-- CUDA memcpy2D 쿠다 커널 직접 카피 (`cudaMemcpy2D()`)
-  - 실행 시간: 0.0056초
-  - CUDA에서 글로벌 메모리 쓰는 버전이나, 쉐어드 메모리 쓰는 버전보다. 빨라짐
-  - 그래서, `사실은 이것이.. 우리가 CUDA 프로그래밍할때 기준이 되는, 속도 레퍼런스가 됨`
-    - 이것 보다 더 빠른 알고리즘을 우리가 CUDA에 구현하는 것은 불가능함.
 
 
 
 
 
-[Return Par4 Matrix Multiply](../README.md)  
+[Return Par5 Atomic Operation](../README.md)  
