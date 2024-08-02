@@ -110,10 +110,4 @@
   - 따라서, 최적화 시에는 반드시 global memory access 패턴의 분석이 필요함!
   
 
-
-
-
-
-
-
 [Return Par5 Atomic Operation](../README.md)  
