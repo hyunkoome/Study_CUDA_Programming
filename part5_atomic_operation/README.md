@@ -33,7 +33,19 @@
   - `shared 메모리에서, atomic 연산하면서, 4바이트 처리하면 가장 빠르다!!`
 
 [Section31-32: Reduction Problem](./doc/section25.md)
-
+- Reduction Problem
+  - Sequential Reduction Algorithms
+  - Parallel Reduction Algorithms
+- Example: total sum
+  - CPU version
+  - atomic op
+  - shared atomic op
+  - reduction: `이것만 해도. 엄청 획기적으로 빨라진다!`
+  - reversed reduction
+  - add first
+  - last warp
+  - warp shuffle
+  - two step
   
 [Section33: GEMV(general matrix to vector multiplication)](./doc/section27.md)
 
