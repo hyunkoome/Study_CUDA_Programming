@@ -3,6 +3,11 @@ project(sum_host CUDA)
 project(sum_atomic CUDA)
 project(sum_shared CUDA)
 project(sum_reduce CUDA)
+project(sum_reversed CUDA)
+project(sum_addFirst CUDA)
+project(sum_lastwarp CUDA)
+project(sum_warpshuffle CUDA)
+project(sum_twostep CUDA)
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -37,12 +42,42 @@ add_executable(sum_reduce
         common.cpp
 )
 
+add_executable(sum_reversed
+        sum_reversed.cu
+        common.cpp
+)
+
+add_executable(sum_addFirst
+        sum_addFirst.cu
+        common.cpp
+)
+
+add_executable(sum_lastwarp
+        sum_lastwarp.cu
+        common.cpp
+)
+
+add_executable(sum_warpshuffle
+        sum_reduce.cu
+        common.cpp
+)
+
+add_executable(sum_twostep
+        sum_twostep.cu
+        common.cpp
+)
+
 
 set_target_properties(
         sum_host
         sum_atomic
         sum_shared
         sum_reduce
+        sum_reversed
+        sum_addFirst
+        sum_lastwarp
+        sum_warpshuffle
+        sum_twostep
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )
