@@ -28,9 +28,11 @@
   - `atomic 연산 사용`하면, `엄청 빨라짐`.
 
 [Section30: Histogram Problem](./doc/section24.md)
+- atomic operation 사용하여 histogram 구하기
+  - 4바이트 처리하면. 빨라지고
+  - `shared 메모리에서, atomic 연산하면서, 4바이트 처리하면 가장 빠르다!!`
 
-
-[Section31-32: Reduction](./doc/section25.md)
+[Section31-32: Reduction Problem](./doc/section25.md)
 
   
 [Section33: GEMV(general matrix to vector multiplication)](./doc/section27.md)
