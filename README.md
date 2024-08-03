@@ -109,4 +109,6 @@ make
     - atomic operation 사용하여 histogram 구하기
     - Reduction Problem 솔루션 
     - GEMV operation
+  - `part6_search_sort`: [Search & Sort](./part6_search_sort/README.md)
+    - 
   
