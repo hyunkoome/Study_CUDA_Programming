@@ -101,4 +101,12 @@ make
     - GEMM: general matrix-to-matrix multiplication
     - 메모리에 따른 CUDA 변수 스피드 측정
     - 정밀도와 속도개선
+  - `part5_atommic_operation`: [Atomic Operation](./part5_atomic_operation/README.md)
+    - Control Flow
+      - if 문 과 for loop 문 어떻게 최적화 할것인지?
+      - shared 메모리를 사용하는 경우라면, `half-by-half`를 사용하는 `even-odd` 보다 조금더 빠르다.!!
+    - race conditions 문제의 해결방법으로 Atomic Operation 사용 
+    - atomic operation 사용하여 histogram 구하기
+    - Reduction Problem 솔루션 
+    - GEMV operation
   
