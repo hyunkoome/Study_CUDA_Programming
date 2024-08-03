@@ -48,7 +48,20 @@
   - two step `two step 어프로치로, 작은 커널에서 reduction program을 two level로 돌리는 것을 적용`
   
 [Section33: GEMV(general matrix to vector multiplication)](./doc/section27.md)
-
+- GEMV operation
+  - generalized matrix-vector multiplication
+- test for 행렬 (16K-by-16K) x 벡터 (16K) case
+  - host version
+  - CUDA global memory
+  - CUDA transpose matrix
+    - `transpose 테크닉을 사용해서.`
+    - `데이터를 가져올때 메모리를 가로로 읽게 하면,`
+    - `속도가 엄청 개선됨.`
+  - CUDA tiled
+  - CUDA 2D kernel
+    - `memory coalescing 을 고려하면,`
+    - `너무 커널을 세분화 해서 돌리는 것 보다는,`
+    - `차라리, tile을 쓰는 정도로 접근하는게 낫다.`
   
 [Return Main Readme](../README.md)  
 
