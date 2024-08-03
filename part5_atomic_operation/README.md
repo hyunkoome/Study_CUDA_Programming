@@ -41,11 +41,11 @@
   - atomic op
   - shared atomic op
   - reduction: `이것만 해도. 엄청 획기적으로 빨라진다!`
-  - reversed reduction
-  - add first
-  - last warp
-  - warp shuffle
-  - two step
+  - reversed reduction `reduction 적용순서를 반대로 하거나`
+  - add first `혹은, 미리 두개를 더하는 add first 전략을 쓰거나`
+  - last warp `혹은, last warp를 빨리 처리하는 기법을 도입하거나`
+  - warp shuffle `warp를 셔플 시키는 것도 있었고`
+  - two step `two step 어프로치로, 작은 커널에서 reduction program을 two level로 돌리는 것을 적용`
   
 [Section33: GEMV(general matrix to vector multiplication)](./doc/section27.md)
 
