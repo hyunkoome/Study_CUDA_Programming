@@ -26,7 +26,11 @@
   - 개선 방법은.. 아래 섹션에..
   
 [Section38: Bitonic Sort 바이토닉 소트](./doc/section38.md)
-- 
+- bitonic sort
+  - 병렬 처리를 위한, 소팅 방법이라고 보면 됨
+- block 단위 parallel sort
+  - CUDA bitonic sort 를 구현해서, 얼마나 빨라지는 지 확인.
+- 대용량 데이터 기반의 bitonoc sort 를 위해 global 메모리 사용법에 대해서 알아봄 
 
 [Section39: Counting Merge Sort 카운팅 방식 머지 소트 (병합 정렬)](./doc/section39.md)
 - 
