@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
-project(evenodd CUDA)
-project(halfhalf CUDA)
-project(evenodd_shared CUDA)
-project(halfhalf_shared CUDA)
+project(cpu_bitonic_block CUDA)
+project(bitonic_block CUDA)
+project(cpu_bitonic2_block CUDA)
+project(bitonic2_block CUDA)
+project(bitonic_outer_bubble CUDA)
+project(bitonic_outer_bubble_large CUDA)
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -17,31 +19,43 @@ set(CMAKE_CUDA_ARCHITECTURES 89)  # This is for CUDA 11.2 and newer
 # Add the -w flag to suppress warnings
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -w")
 
-add_executable(evenodd
-        evenodd.cu
+add_executable(cpu_bitonic_block
+        cpu_bitonic_block.cu
         common.cpp
 )
 
-add_executable(halfhalf
-        halfhalf.cu
+add_executable(bitonic_block
+        bitonic_block.cu
         common.cpp
 )
 
-add_executable(evenodd_shared
-        evenodd_shared.cu
+add_executable(cpu_bitonic2_block
+        cpu_bitonic2_block.cu
         common.cpp
 )
 
-add_executable(halfhalf_shared
-        halfhalf_shared.cu
+add_executable(bitonic2_block
+        bitonic2_block.cu
+        common.cpp
+)
+
+add_executable(bitonic_outer_bubble
+        bitonic_outer_bubble.cu
+        common.cpp
+)
+
+add_executable(bitonic_outer_bubble_large
+        bitonic_outer_bubble_large.cu
         common.cpp
 )
 
 set_target_properties(
-        evenodd
-        halfhalf
-        evenodd_shared
-        halfhalf_shared
+        cpu_bitonic_block
+        bitonic_block
+        cpu_bitonic2_block
+        bitonic2_block
+        bitonic_outer_bubble
+        bitonic_outer_bubble_large
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )

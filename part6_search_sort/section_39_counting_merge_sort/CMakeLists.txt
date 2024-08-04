@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.27)
-project(evenodd CUDA)
-project(halfhalf CUDA)
-project(evenodd_shared CUDA)
-project(halfhalf_shared CUDA)
+project(cpu_merge_block CUDA)
+project(merge_increasing_block CUDA)
+project(merge_block CUDA)
+project(merge_outer_bubble CUDA)
+project(merge_outer_bubble_large CUDA)
+project(merge_global CUDA)
+project(merge_global_large CUDA)
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -17,31 +20,49 @@ set(CMAKE_CUDA_ARCHITECTURES 89)  # This is for CUDA 11.2 and newer
 # Add the -w flag to suppress warnings
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -w")
 
-add_executable(evenodd
-        evenodd.cu
+add_executable(cpu_merge_block
+        cpu_merge_block.cu
         common.cpp
 )
 
-add_executable(halfhalf
-        halfhalf.cu
+add_executable(merge_increasing_block
+        merge_increasing_block.cu
         common.cpp
 )
 
-add_executable(evenodd_shared
-        evenodd_shared.cu
+add_executable(merge_block
+        merge_block.cu
         common.cpp
 )
 
-add_executable(halfhalf_shared
-        halfhalf_shared.cu
+add_executable(merge_outer_bubble
+        merge_outer_bubble.cu
+        common.cpp
+)
+
+add_executable(merge_outer_bubble_large
+        merge_outer_bubble_large.cu
+        common.cpp
+)
+
+add_executable(merge_global
+        merge_global.cu
+        common.cpp
+)
+
+add_executable(merge_global_large
+        merge_global_large.cu
         common.cpp
 )
 
 set_target_properties(
-        evenodd
-        halfhalf
-        evenodd_shared
-        halfhalf_shared
+        cpu_merge_block
+        merge_increasing_block
+        merge_block
+        merge_outer_bubble
+        merge_outer_bubble_large
+        merge_global
+        merge_global_large
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )
