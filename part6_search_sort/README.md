@@ -33,7 +33,8 @@
 - 대용량 데이터 기반의 bitonic sort 를 위해 global 메모리 사용법에 대해서 알아봄 
 
 [Section39: Counting Merge Sort 카운팅 방식 머지 소트 (병합 정렬)](./doc/section39.md)
-- 
+- 병렬 처리에 가장 적합한 merge sort 에 대해서 알아보자!
+  - Large Scale Parallel Counting Merge Sort
   
 [Return Main Readme](../README.md)  
 
