@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
-project(evenodd CUDA)
-project(halfhalf CUDA)
-project(evenodd_shared CUDA)
-project(halfhalf_shared CUDA)
+project(search_all CUDA)
+project(search_all_find CUDA)
+project(search_all_atomic CUDA)
+project(search_all_block CUDA)
+project(search_all_stride CUDA)
+project(search_all_stride2 CUDA)
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -17,31 +19,43 @@ set(CMAKE_CUDA_ARCHITECTURES 89)  # This is for CUDA 11.2 and newer
 # Add the -w flag to suppress warnings
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -w")
 
-add_executable(evenodd
-        evenodd.cu
+add_executable(search_all
+        search_all.cu
         common.cpp
 )
 
-add_executable(halfhalf
-        halfhalf.cu
+add_executable(search_all_find
+        search_all_find.cu
         common.cpp
 )
 
-add_executable(evenodd_shared
-        evenodd_shared.cu
+add_executable(search_all_atomic
+        search_all_atomic.cu
         common.cpp
 )
 
-add_executable(halfhalf_shared
-        halfhalf_shared.cu
+add_executable(search_all_block
+        search_all_block.cu
+        common.cpp
+)
+
+add_executable(search_all_stride
+        search_all_stride.cu
+        common.cpp
+)
+
+add_executable(search_all_stride2
+        search_all_stride2.cu
         common.cpp
 )
 
 set_target_properties(
-        evenodd
-        halfhalf
-        evenodd_shared
-        halfhalf_shared
+        search_all
+        search_all_find
+        search_all_atomic
+        search_all_block
+        search_all_stride
+        search_all_stride2
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
-project(evenodd CUDA)
-project(halfhalf CUDA)
-project(evenodd_shared CUDA)
-project(halfhalf_shared CUDA)
+project(bsearch_host CUDA)
+project(bsearch_host_bsearch CUDA)
+project(bsearch_host_stl CUDA)
+project(bsearch_cuda_block CUDA)
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -17,31 +17,31 @@ set(CMAKE_CUDA_ARCHITECTURES 89)  # This is for CUDA 11.2 and newer
 # Add the -w flag to suppress warnings
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -w")
 
-add_executable(evenodd
-        evenodd.cu
+add_executable(bsearch_host
+        bsearch_host.cu
         common.cpp
 )
 
-add_executable(halfhalf
-        halfhalf.cu
+add_executable(bsearch_host_bsearch
+        bsearch_host_bsearch.cu
         common.cpp
 )
 
-add_executable(evenodd_shared
-        evenodd_shared.cu
+add_executable(bsearch_host_stl
+        bsearch_host_stl.cu
         common.cpp
 )
 
-add_executable(halfhalf_shared
-        halfhalf_shared.cu
+add_executable(bsearch_cuda_block
+        bsearch_cuda_block.cu
         common.cpp
 )
 
 set_target_properties(
-        evenodd
-        halfhalf
-        evenodd_shared
-        halfhalf_shared
+        bsearch_host
+        bsearch_host_bsearch
+        bsearch_host_stl
+        bsearch_cuda_block
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )
