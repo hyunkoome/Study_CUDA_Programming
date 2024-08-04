@@ -18,7 +18,12 @@
   - `그냥 CPU 사용하세요!. 특히 STL 짱짱 빠름.`
 
 [Section37: Even Odd Sort 이븐-오드 방식 정렬](./doc/section37.md)
-- 
+- `CUDA 에서 Sort 하는 방법`.. 본격적으로 얘기해 보자!!
+- 블럭 단위 parallel sorting
+  - CUDA even-odd sort: 엄청 빨라 짐
+- global 메모리 활용 parallel sort 할때는, 
+  - CUDA (even-odd) 에서 도차도 상당히 느리다.
+  - 개선 방법은.. 아래 섹션에..
   
 [Section38: Bitonic Sort 바이토닉 소트](./doc/section38.md)
 - 

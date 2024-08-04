@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.27)
-project(evenodd CUDA)
-project(halfhalf CUDA)
-project(evenodd_shared CUDA)
-project(halfhalf_shared CUDA)
+project(qsort_block CUDA)
+project(std_sort_block CUDA)
+project(cpu_bubble_block CUDA)
+project(cpu_even_odd_block.cu CUDA)
+project(even_odd_block CUDA)
+project(even_odd_global CUDA)
+project(even_odd_outer_bubble CUDA)
 
 if ($ENV{CLION_IDE})
     include_directories("/usr/local/cuda-12.1/include")
@@ -17,31 +20,49 @@ set(CMAKE_CUDA_ARCHITECTURES 89)  # This is for CUDA 11.2 and newer
 # Add the -w flag to suppress warnings
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -w")
 
-add_executable(evenodd
-        evenodd.cu
+add_executable(qsort_block
+        qsort_block.cu
         common.cpp
 )
 
-add_executable(halfhalf
-        halfhalf.cu
+add_executable(std_sort_block
+        std_sort_block.cu
         common.cpp
 )
 
-add_executable(evenodd_shared
-        evenodd_shared.cu
+add_executable(cpu_bubble_block
+        cpu_bubble_block.cu
         common.cpp
 )
 
-add_executable(halfhalf_shared
-        halfhalf_shared.cu
+add_executable(cpu_even_odd_block
+        cpu_even_odd_block.cu
+        common.cpp
+)
+
+add_executable(even_odd_block
+        even_odd_block.cu
+        common.cpp
+)
+
+add_executable(even_odd_global
+        even_odd_block.cu
+        common.cpp
+)
+
+add_executable(even_odd_outer_bubble
+        even_odd_outer_bubble.cu
         common.cpp
 )
 
 set_target_properties(
-        evenodd
-        halfhalf
-        evenodd_shared
-        halfhalf_shared
+        qsort_block
+        std_sort_block
+        cpu_bubble_block
+        cpu_even_odd_block
+        even_odd_block
+        even_odd_global
+        even_odd_outer_bubble
         PROPERTIES
         CUDA_SEPARABLE_COMPILATION ON
 )
