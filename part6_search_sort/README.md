@@ -1,7 +1,10 @@
 # Search & Sort
 
 [Section34: Linear Search 선형 탐색](./doc/section34.md)
-- 
+- n 개의 집합(배열 또는 리스트)에서 x 를 찾아라~ 
+  - 제일 먼저 나오는거 1개만 찾자!
+- CUDA에서 stride 사용해서 좀 빠르게 가속 시키면..
+  - 최소한 C 나 C++ 에서 가속된 것 만큼의 속도를 낼 것이다.
 
 [Section35: Search All 모든 위치 모두 찾기](./doc/section35.md)
 - 
